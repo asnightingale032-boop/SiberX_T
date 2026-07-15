@@ -1,0 +1,52 @@
+name: Static Security Checks
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+jobs:
+  frontend-hygiene:
+    name: Front-end vulnerability patterns
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Verify Node.js JS syntax
+        run: |
+          for f in $(find assets/js -name "*.js"); do
+            echo "Checking $f"
+            node --check "$f"
+          done
+
+      - name: Block dangerous JS patterns (eval, document.write, inline handlers)
+        run: |
+          set -e
+          echo "Scanning for eval(), Function(), document.write(..."
+          if grep -RInE "eval\(|new Function\(|document\.write\(" --include="*.js" --include="*.html" .; then
+            echo "::error::Found a dangerous JS pattern (eval / Function constructor / document.write)."
+            exit 1
+          fi
+          echo "Scanning HTML for inline event-handler attributes (onclick=, onerror=, etc.)..."
+          if grep -RInE '\son[a-z]+\s*=\s*"' --include="*.html" .; then
+            echo "::error::Found an inline event-handler attribute — this breaks the strict script-src CSP and is a front-end risk. Use addEventListener instead."
+            exit 1
+          fi
+          echo "No dangerous patterns found."
+
+      - name: Block obvious hardcoded secrets (belt-and-suspenders alongside gitleaks)
+        run: |
+          set -e
+          # security-review.js intentionally contains fictional, fake
+          # secrets as training content for the Security Review Lab —
+          # excluded here the same way it's excluded in .gitleaks.toml.
+          if grep -RInE "(api[_-]?key|secret[_-]?key|access[_-]?token)\s*[:=]\s*['\"][A-Za-z0-9_\-]{16,}['\"]" \
+             --include="*.js" --include="*.html" --include="*.json" \
+             --exclude-dir=".github" \
+             --exclude="security-review.js" .; then
+            echo "::error::Found what looks like a hardcoded secret. Remove it and rotate the credential immediately if real."
+            exit 1
+          fi
+          echo "No obvious hardcoded secrets found."
