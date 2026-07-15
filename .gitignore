@@ -1,0 +1,21 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Env & secrets — nothing in this repo should ever need these,
+# but the rule stays in place as a guardrail regardless.
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Tooling
+node_modules/
+.vercel
+*.log
+npm-debug.log*

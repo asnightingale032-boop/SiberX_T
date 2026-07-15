@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Crisis Simulator — SiberX Crisis Command</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+
+<main class="page">
+  <div class="page-head">
+    <span class="eyebrow">Interactive Crisis Simulator</span>
+    <h1>Live Incident Response Console</h1>
+    <p>Watch the attack unfold across SiberX's digital signage, PA, mobile app, and microservice layers. Isolate systems, force manual operations, and eliminate the threat — every action moves the network map and the clock.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <section class="panel">
+      <h3>System Topology</h3>
+      <svg id="net-map" viewBox="0 0 480 380" role="img" aria-label="System topology map" style="width:100%; height:auto;"></svg>
+      <div class="flex gap-8 wrap" style="margin-top:10px;">
+        <span class="pill pill--ok"><span class="dot"></span>Nominal</span>
+        <span class="pill pill--degraded"><span class="dot"></span>Degraded</span>
+        <span class="pill pill--critical"><span class="dot"></span>Compromised</span>
+        <span class="pill pill--offline"><span class="dot"></span>Isolated</span>
+      </div>
+    </section>
+
+    <section class="panel panel--alert">
+      <h3>Hijacked Channel Transcript <span class="text-sm text-dim mono">(live)</span></h3>
+      <div class="chat" style="height:300px;">
+        <div class="chat__log" id="pa-log"></div>
+      </div>
+      <p class="text-sm mt-8">These are the messages riders and staff are actually seeing/hearing right now, unless you contain the source.</p>
+    </section>
+  </div>
+
+  <section class="panel panel--ok mt-24">
+    <h3>AI Triage Assistant <span class="pill pill--ok" style="margin-left:6px;"><span class="dot"></span>Safe integration pattern</span></h3>
+    <p class="text-sm">Ask it about the incident. This assistant is intentionally <b>rule-based and fully client-side</b> — it makes zero network calls, holds no API key, and every reply is a fixed template matched against keywords in your message. That's a deliberate contrast with the "Unsafe AI Integrations" finding in the <a href="security-review.html">Security Review Lab</a>, where a real LLM key is hardcoded into browser code.</p>
+    <div class="chat" style="height:260px;">
+      <div class="chat__log" id="ai-log"></div>
+      <div class="chat__input">
+        <input id="ai-input" type="text" placeholder="e.g. what should I isolate first?" maxlength="200">
+        <button class="btn btn-primary btn-sm" id="ai-send" type="button">Ask</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid grid-2 mt-24">
+    <section class="panel">
+      <h3>Containment &amp; Eradication Actions</h3>
+      <p class="text-sm">These map directly to the systems shown on the topology map.</p>
+      <div class="flex wrap" style="gap:10px;">
+        <button class="btn" data-sys-action="signage:offline" type="button">Isolate Digital Signage</button>
+        <button class="btn" data-sys-action="pa:offline" type="button">Force Manual PA Control</button>
+        <button class="btn" data-sys-action="mobile:offline" type="button">Quarantine Mobile Push Service</button>
+        <button class="btn" data-sys-action="gateway:offline" type="button">Isolate Microservices Gateway</button>
+        <button class="btn btn-danger" data-sys-action="gateway:restored;pa:restored;signage:restored" type="button">Revoke API Keys &amp; Rotate Secrets</button>
+        <button class="btn btn-primary" data-sys-action="signage:restored;pa:restored;mobile:restored;gateway:restored;ticketing:restored" type="button">Restore Green-Field Environment</button>
+      </div>
+      <hr class="divider">
+      <h3>SOC Event Log</h3>
+      <div class="feed" id="sim-feed"></div>
+    </section>
+
+    <section class="panel">
+      <h3>Forensic Case Notebook</h3>
+      <p class="text-sm">Log your observations and hypotheses as the investigation develops. Entries are saved to the incident case file (locally, in your browser only).</p>
+      <div class="field">
+        <label for="note-input">New forensic note</label>
+        <textarea id="note-input" maxlength="500" placeholder="e.g. Signage CMS deploy pipeline triggered outside change window — check vendor contractor account access history."></textarea>
+        <div class="hint">Max 500 characters. Sanitized on entry, escaped on display.</div>
+      </div>
+      <button class="btn btn-primary" id="note-submit" type="button">Add to case file</button>
+      <hr class="divider">
+      <div id="notes-list" style="max-height:220px; overflow-y:auto;"></div>
+    </section>
+  </div>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/simulator.js"></script>
+</body>
+</html>

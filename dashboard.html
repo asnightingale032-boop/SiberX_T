@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Executive Dashboard — SiberX Crisis Command</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+
+<main class="page">
+  <div class="page-head">
+    <span class="eyebrow">Executive Dashboard</span>
+    <h1>Incident Overview — SiberX Transit Systems</h1>
+    <p>Live posture across signage, PA, mobile, and microservice layers. Actions taken here are logged to the incident record and affect public sentiment, availability, and your leadership score.</p>
+  </div>
+
+  <div class="grid grid-4" id="kpi-row"></div>
+
+  <div class="grid grid-2 mt-24">
+    <section class="panel panel--alert">
+      <h3>Live Alert Feed</h3>
+      <div class="feed" id="alert-feed"></div>
+      <button class="btn btn-sm mt-16" id="pull-alert-btn" type="button">Pull latest SOC alert</button>
+    </section>
+
+    <section class="panel">
+      <h3>Transit Line Status</h3>
+      <table>
+        <thead><tr><th>Line</th><th>Name</th><th>Status</th></tr></thead>
+        <tbody id="lines-table"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <div class="grid grid-2 mt-24">
+    <section class="panel">
+      <h3>Executive Actions</h3>
+      <p class="text-sm">Each action moves the incident forward and is timestamped into the official record.</p>
+      <div class="flex wrap" style="gap:10px;">
+        <button class="btn btn-danger" data-action="declare" type="button">Declare Level 3 Incident</button>
+        <button class="btn" data-action="statement" type="button">Authorize Public Statement</button>
+        <button class="btn" data-action="bcp" type="button">Activate Business Continuity Plan</button>
+        <button class="btn" data-action="convene" type="button">Convene Crisis Committee</button>
+        <button class="btn" data-action="revoke" type="button">Revoke Compromised API Keys</button>
+        <button class="btn" data-action="greenfield" type="button">Restore Green-Field Environment</button>
+      </div>
+      <hr class="divider">
+      <h3>Incident Record</h3>
+      <div class="feed" id="decision-log" style="max-height:200px;"></div>
+    </section>
+
+    <section class="panel">
+      <h3>Crisis Command Chat</h3>
+      <div class="chat">
+        <div class="chat__log" id="chat-log"></div>
+        <div class="chat__input">
+          <input id="chat-input" type="text" placeholder="Message the crisis committee..." maxlength="240">
+          <button class="btn btn-primary btn-sm" id="chat-send" type="button">Send</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="panel mt-24">
+    <h3>Site Security Posture</h3>
+    <p class="text-sm">This platform's own hardening — verified live on <a href="security-review.html">the Security Review Lab</a>.</p>
+    <div class="posture-grid">
+      <div class="posture-item"><span class="ico">✅</span>No secrets or API keys in this codebase</div>
+      <div class="posture-item"><span class="ico">✅</span>Strict CSP, no inline scripts or handlers</div>
+      <div class="posture-item"><span class="ico">✅</span>All user input escaped + sanitized</div>
+      <div class="posture-item"><span class="ico">✅</span>Zero third-party scripts or font requests</div>
+      <div class="posture-item"><span class="ico">✅</span>Session auto-expires after 30 min idle</div>
+      <div class="posture-item"><span class="ico">✅</span>security.txt published for disclosure</div>
+    </div>
+  </section>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/dashboard.js"></script>
+</body>
+</html>

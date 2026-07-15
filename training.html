@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Training Portal — SiberX Crisis Command</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+
+<main class="page">
+  <div class="page-head">
+    <span class="eyebrow">Cybersecurity Training Portal</span>
+    <h1>Build the Muscle Memory Before the Real Thing</h1>
+    <p>Short modules drawn directly from the SiberX incident. Complete the quiz at the end of each module to log it to your training record. For hands-on code review practice, see the <a href="security-review.html">Security Review Lab</a>.</p>
+  </div>
+
+  <div class="grid grid-2" id="module-grid"></div>
+
+  <section class="panel mt-24">
+    <h3>Module Quiz — Incident Response Fundamentals</h3>
+    <p class="text-sm">Answer each question, then check your work.</p>
+    <div id="quiz-body"></div>
+    <button class="btn btn-primary mt-16" id="quiz-check" type="button">Check answers</button>
+    <div id="quiz-result" class="banner mt-16" style="display:none;"></div>
+  </section>
+
+  <section class="panel mt-24">
+    <h3>Your Training Record</h3>
+    <div id="training-record"></div>
+  </section>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/training.js"></script>
+</body>
+</html>

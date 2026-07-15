@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decision Simulator — SiberX Crisis Command</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+
+<main class="page page--narrow">
+  <div class="page-head">
+    <span class="eyebrow">Decision Making Simulator</span>
+    <h1>Crisis Branching Scenario</h1>
+    <p>Six decision points, drawn straight from the SiberX incident. Each choice trades off security, public trust, operational continuity, and leadership — there's rarely a free option.</p>
+  </div>
+
+  <div class="panel mt-16">
+    <div class="flex between center" style="margin-bottom:6px;">
+      <span class="eyebrow" id="stage-label" style="margin:0;">Stage 1 of 6</span>
+      <span class="text-sm text-dim mono" id="stage-progress"></span>
+    </div>
+    <div id="scenario-body"></div>
+  </div>
+
+  <section class="panel mt-24">
+    <h3>Running Scorecard</h3>
+    <div id="score-bars"></div>
+  </section>
+
+  <section class="panel mt-24" id="debrief-panel" style="display:none;">
+    <h3>Post-Incident Debrief</h3>
+    <div id="debrief-body"></div>
+    <button class="btn btn-primary mt-16" id="restart-btn" type="button">Restart scenario</button>
+  </section>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/decisions.js"></script>
+</body>
+</html>

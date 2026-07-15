@@ -1,0 +1,11 @@
+{
+  "name": "siberx-crisis-command",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Fictional cyber-crisis training simulation for SiberX Transit Systems, with a built-in vulnerability assessment lab.",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "start": "npx --yes serve . -l 8080"
+  },
+  "license": "MIT"
+}

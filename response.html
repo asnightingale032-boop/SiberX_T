@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Public Breach Response — SiberX Transit Systems</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+
+<main class="page page--narrow">
+  <div class="page-head">
+    <span class="eyebrow">Public Notice · Fictional operator page</span>
+    <h1>A Message to SiberX Riders About Today's Incident</h1>
+    <p>We know trust in public transit depends on more than trains running on time. Here's what happened, what we're doing about it, and how to check if you're affected.</p>
+  </div>
+
+  <section class="panel">
+    <h3>What happened</h3>
+    <p>Earlier today, attackers gained access to a shared service account used by our digital signage, PA, and mobile app systems. This allowed false messages to appear on some station screens, PA systems, and in the app. Our security team detected the activity, isolated the affected systems, and began restoring service from verified, trusted infrastructure.</p>
+    <h3>What we're doing</h3>
+    <ul style="color:var(--text-dim); padding-left:18px;">
+      <li>Revoked and rotated all exposed credentials</li>
+      <li>Rebuilt affected systems from a trusted, verified environment</li>
+      <li>Engaged an independent forensic review, including national cybersecurity authorities</li>
+      <li>Reviewing vendor account access policies across the network</li>
+    </ul>
+  </section>
+
+  <section class="panel mt-24">
+    <h3>Check if you may have been affected</h3>
+    <p class="text-sm">Enter your fare card's last 4 digits. This is a simulated lookup for this training exercise — no real account data is used or transmitted anywhere.</p>
+    <div class="flex gap-8">
+      <input id="card-check" type="text" inputmode="numeric" pattern="\d{4}" maxlength="4" placeholder="Last 4 digits" style="max-width:160px; background:var(--panel-raised); border:1px solid var(--hairline); border-radius:8px; padding:11px 12px; color:var(--text-primary);">
+      <button class="btn btn-primary" id="card-check-btn" type="button">Check status</button>
+    </div>
+    <div id="card-result" class="banner mt-16" style="display:none;"></div>
+  </section>
+
+  <section class="panel mt-24">
+    <h3>Frequently asked questions</h3>
+    <details class="acc-item"><summary>Was my payment information stolen?</summary><p>Our investigation to date shows no evidence that stored payment data was accessed. This page will be updated if that changes.</p></details>
+    <details class="acc-item"><summary>Is it safe to use the app and signage now?</summary><p>Affected systems have been isolated and rebuilt from a trusted environment. We recommend updating the app to the latest version.</p></details>
+    <details class="acc-item"><summary>Why did the signage tell me to evacuate?</summary><p>That message was not issued by SiberX — it was pushed by the attacker through a compromised system. There was no actual safety risk to the network.</p></details>
+    <details class="acc-item"><summary>How do I report something suspicious I saw today?</summary><p>Use the report form below, or contact customer support through the official SiberX app or website.</p></details>
+  </section>
+
+  <section class="panel mt-24">
+    <h3>Report something you saw</h3>
+    <div class="field"><label for="r-name">Name</label><input id="r-name" type="text" maxlength="60" placeholder="Your name"></div>
+    <div class="field"><label for="r-station">Station or line</label><input id="r-station" type="text" maxlength="80" placeholder="e.g. Union interchange, Crosstown Line"></div>
+    <div class="field"><label for="r-detail">What did you see?</label><textarea id="r-detail" maxlength="500" placeholder="Describe what you saw or experienced"></textarea></div>
+    <button class="btn btn-primary" id="r-submit" type="button">Submit report</button>
+    <div id="r-confirm" class="banner mt-16" style="display:none;"><span>✓</span><span>Thank you — your report has been added to the incident record for review.</span></div>
+  </section>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/response.js"></script>
+</body>
+</html>

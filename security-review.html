@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Security Review Lab — SiberX Crisis Command</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+
+<main class="page">
+  <div class="page-head">
+    <span class="eyebrow">Vulnerability Assessment · Pre-Production Gate</span>
+    <h1>Security Review Lab</h1>
+    <p>Before SiberX brings any rebuilt system back into production, an independent reviewer signs off on the code and configuration behind it. That's you. Seven findings below are pulled from the SiberX codebase and infrastructure — decide whether each is <b>Secure</b> or <b>Vulnerable</b>, then pick what's actually wrong. Your audit score feeds the incident scorecard.</p>
+  </div>
+
+  <section class="panel">
+    <h3>This Platform's Own Security Posture</h3>
+    <p class="text-sm">Live self-check of the headers this site serves. Run it here, then compare to what you'd expect from a hardened site.</p>
+    <button class="btn btn-sm" id="run-header-check" type="button">Run live header check</button>
+    <div class="mt-16" id="header-check-list"></div>
+    <p class="text-sm mt-8" id="header-check-note"></p>
+  </section>
+
+  <section class="mt-24">
+    <h3 style="text-transform:none; margin-bottom:14px;">Findings to Review</h3>
+    <div class="lab-grid" id="lab-grid"></div>
+  </section>
+
+  <section class="panel mt-24" id="finding-detail" style="display:none;"></section>
+
+  <section class="panel mt-24">
+    <h3>Audit Scorecard</h3>
+    <div class="flex between center wrap gap-12">
+      <div>
+        <div class="big-stat" id="lab-score">0 / 0</div>
+        <span class="text-sm text-dim">categories correctly assessed</span>
+      </div>
+      <button class="btn copy-btn" id="copy-report-btn" type="button">Copy findings report</button>
+    </div>
+    <div id="lab-report" class="mt-16"></div>
+  </section>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/security-review.js"></script>
+</body>
+</html>

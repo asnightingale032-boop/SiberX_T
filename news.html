@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ODTN News — SiberX Transit Cyber Incident</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="control-bar" id="control-bar"></header>
+<div class="breaking-bar"><span class="live-dot"></span> BREAKING — SIBERX TRANSIT SYSTEMS CYBER INCIDENT — ODTN LIVE COVERAGE</div>
+
+<main class="page">
+  <div class="page-head">
+    <span class="eyebrow">ODTN News · Fictional outlet, exercise only</span>
+    <h1>Cyberattack Disrupts SiberX Transit Signage, PA and App Across the Network</h1>
+    <p class="text-sm text-dim mono" id="byline">By ODTN Newsroom · Updated <span id="news-clock"></span> · <span id="viewer-count"></span> watching live</p>
+  </div>
+
+  <div class="grid grid-2">
+    <section>
+      <article class="card">
+        <p>Commuters across the SiberX Transit Systems network reported false "evacuate" messages on station signage and public address systems this morning, alongside a wave of suspicious mobile app notifications, in what the operator has confirmed is an active cybersecurity incident.</p>
+        <p>SiberX says its security operations center detected the anomaly through conflicting operational data between station systems and central control, and has since isolated affected services. The operator says no fare payment data is confirmed compromised at this time and that an investigation, including the possibility of insider involvement, is underway.</p>
+        <p>ODTN will continue to update this story as the situation develops. Riders are urged to rely only on official SiberX channels for service information.</p>
+      </article>
+
+      <section class="panel mt-24">
+        <h3>Live Updates</h3>
+        <div class="feed" id="live-updates" style="max-height:420px;"></div>
+      </section>
+
+      <section class="panel mt-24">
+        <h3>What Riders Are Saying</h3>
+        <div id="witness-quotes" class="grid grid-2"></div>
+      </section>
+    </section>
+
+    <aside>
+      <section class="panel">
+        <h3>Incident Snapshot</h3>
+        <div id="snapshot-body"></div>
+      </section>
+      <section class="panel mt-16">
+        <h3>Related Coverage</h3>
+        <ul style="padding-left:18px; color:var(--text-dim); font-size:13px;">
+          <li class="mt-8">Explainer: how a shared service credential can compromise multiple systems at once</li>
+          <li class="mt-8">Timeline: the last major transit cyber incidents in North America</li>
+          <li class="mt-8">Opinion: why public transit is an attractive target for attackers</li>
+          <li class="mt-8">SiberX shares dip after incident disclosure, analysts say response will matter more than the breach itself</li>
+        </ul>
+      </section>
+      <section class="panel mt-16">
+        <h3>Submit a Tip</h3>
+        <p class="text-sm">Seeing something unusual on SiberX signage, the app, or PA system? Tell our newsroom.</p>
+        <div class="field"><textarea id="tip-text" maxlength="400" placeholder="What did you see, and where?"></textarea></div>
+        <button class="btn btn-block" id="tip-submit" type="button">Send tip to ODTN</button>
+        <p class="text-sm" id="tip-confirm" style="display:none; color:var(--status-ok);">Thanks — your tip has been logged for our newsroom.</p>
+      </section>
+    </aside>
+  </div>
+</main>
+
+<footer class="ticker" id="ticker"></footer>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/news.js"></script>
+</body>
+</html>

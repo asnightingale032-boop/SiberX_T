@@ -1,0 +1,5 @@
+# This is a fictional training exercise, not a real transit operator.
+# No sensitive endpoints exist to disallow — the entire app is static,
+# client-side, and public by design.
+User-agent: *
+Allow: /

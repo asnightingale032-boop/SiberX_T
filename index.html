@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SiberX Crisis Command — Sign In</title>
+<meta name="description" content="Training simulation only. A fictional cyberattack exercise for SiberX Transit Systems.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="control-bar">
+  <a href="index.html" class="control-bar__brand" style="text-decoration:none;color:inherit;">
+    <span class="dot"></span> SIBERX // CRISIS COMMAND
+  </a>
+  <div class="control-bar__nav"></div>
+  <div class="control-bar__meta"><span id="clock">--:--:--</span></div>
+</header>
+
+<div class="auth-shell">
+  <div class="auth-card">
+    <div class="brand-row"><span class="dot"></span><span class="eyebrow" style="margin:0;">Training Exercise · Not a real system</span></div>
+    <h1 style="font-size:21px; text-transform:none;">Crisis Command Access</h1>
+    <p style="font-size:13px;">Sign in to join the SiberX Transit Systems incident response exercise. Any name, code, and 6-digit verification work — this is a self-contained simulation with no backend and no real accounts.</p>
+
+    <div id="expired-banner" class="banner" style="display:none; margin-bottom:16px; border-color:rgba(245,166,35,.4);">
+      <span>⏱</span>
+      <span>Your session expired after 30 minutes of inactivity, consistent with SiberX's access policy. Please sign in again.</span>
+    </div>
+
+    <div class="banner" style="margin-bottom:18px;">
+      <span>⚠️</span>
+      <span><b>Pre-incident notice:</b> SOC has logged 3 minor anomalies across signage and gateway services in the last 24 hours. No action required yet — monitoring continues.</span>
+    </div>
+
+    <form id="login-form" novalidate>
+      <div id="step-credentials">
+        <div class="field">
+          <label for="name">Responder name</label>
+          <input id="name" name="name" type="text" placeholder="e.g. J. Alvarez" required autocomplete="off" maxlength="40" pattern="[^&lt;&gt;]{2,40}">
+          <div class="hint">2–40 characters. No HTML/script content — this field is sanitized and escaped either way.</div>
+        </div>
+        <div class="field">
+          <label for="pass">Access code</label>
+          <input id="pass" name="pass" type="password" placeholder="Any value works in this exercise" required autocomplete="off" minlength="4" maxlength="64">
+        </div>
+        <div class="field">
+          <label>Select your role</label>
+          <div class="role-grid" id="role-grid">
+            <div class="role-opt selected" data-role="Incident Commander" tabindex="0" role="button">Incident<br>Commander</div>
+            <div class="role-opt" data-role="Technical Lead" tabindex="0" role="button">Technical<br>Lead</div>
+            <div class="role-opt" data-role="Executive" tabindex="0" role="button">Executive /<br>CISO</div>
+          </div>
+        </div>
+        <button type="button" class="btn btn-primary btn-block" id="to-mfa-btn">Continue →</button>
+      </div>
+
+      <div id="step-mfa" style="display:none;">
+        <div class="banner banner--ok" style="margin-bottom:16px;">
+          <span>🔐</span>
+          <span><b>Second factor required.</b> This simulates SiberX's real MFA step — a second, independent factor is required before any responder gets access to crisis command tooling.</span>
+        </div>
+        <div class="field">
+          <label for="mfa">6-digit verification code</label>
+          <div class="mfa-box">
+            <input id="mfa" name="mfa" type="text" inputmode="numeric" pattern="\d{6}" maxlength="6" placeholder="000000" required autocomplete="off">
+          </div>
+          <div class="hint">Any 6 digits work in this exercise — the point is the shape of the flow, not real verification.</div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Verify &amp; Enter Crisis Command →</button>
+        <button type="button" class="btn btn-block mt-8" id="back-btn">← Back</button>
+      </div>
+    </form>
+    <p class="auth-note">Educational tabletop simulation built around a fictional transit operator. No real systems, credentials, or people are involved. Nothing typed here is transmitted anywhere — everything stays in your browser.</p>
+  </div>
+</div>
+
+<footer class="site-footer">SiberX Transit Systems Crisis Command Platform — fictional training environment · <a href="SECURITY.md">Security policy</a></footer>
+
+<script src="assets/js/app.js"></script>
+<script src="assets/js/login.js"></script>
+</body>
+</html>

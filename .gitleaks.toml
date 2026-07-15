@@ -1,0 +1,13 @@
+title = "SiberX Crisis Command gitleaks config"
+
+# This repo intentionally contains a handful of *fictional*, clearly-fake
+# API key strings inside assets/js/security-review.js — they're training
+# content for the Security Review Lab's "spot the hardcoded secret"
+# exercise, not real credentials. Allowlisted here so gitleaks (run in
+# .github/workflows/secret-scan.yml) focuses on catching anything
+# genuinely new instead of flagging our own teaching material.
+[allowlist]
+description = "Fictional training snippets, not real secrets"
+paths = [
+  '''assets/js/security-review\.js'''
+]
