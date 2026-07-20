@@ -109,9 +109,14 @@ function touchActivity(){
   }
 }
 function logout(){
-  const s = getState();
-  s.user = null;
-  localStorage.setItem(SIBERX_KEY, JSON.stringify(s));
+  /* Fixed per SECURITY_FINDINGS.md (AUTH-03 / SURF-02): logout used to
+     null out only `user`, leaving every other field (case notes, chat
+     transcripts, decision history, lab progress, submissions) intact
+     in localStorage. The next person to sign in on the same browser —
+     entirely plausible on a shared training-room machine — inherited
+     the previous participant's data. Logout now wipes the whole
+     exercise state, not just the identity field. */
+  resetState();
   window.location.href = 'index.html';
 }
 
