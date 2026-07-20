@@ -1,0 +1,10 @@
+# Fixed per SECURITY_FINDINGS.md (CFG-03): this project has zero npm
+# dependencies, but the GitHub Actions used in .github/workflows/ are
+# themselves a supply-chain surface and need to be tracked for updates.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
