@@ -28,7 +28,7 @@ is teaching good practice.
 
 Please report findings privately rather than opening a public issue:
 
-- Email: **security@example.com** (placeholder — replace with a real
+- Email: **security@siberx-transit.com** (placeholder — replace with a real
   address you control before publishing this repo)
 - Or see `/.well-known/security.txt`, published per [RFC 9116](https://www.rfc-editor.org/rfc/rfc9116)
 
