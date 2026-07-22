@@ -114,7 +114,7 @@ siberx/
 ├── assets/
 │   ├── css/style.css               design system (system fonts only)
 │   └── js/                         one file per page + shared app.js
-├── .well-known/security.txt        RFC 9116 disclosure contact
+├── .wellknown/security.txt        RFC 9116 disclosure contact
 ├── .github/workflows/              secret-scan.yml, static-checks.yml
 ├── .gitleaks.toml                  allowlist for intentional training content
 ├── .gitignore / .env.example
