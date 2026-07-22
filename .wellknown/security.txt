@@ -4,5 +4,5 @@
 Contact: mailto:security@siberx-transit.com
 Expires: 2027-07-15T00:00:00.000Z
 Preferred-Languages: en
-Canonical: https://siberx-t.vercel.app/.well-known/security.txt
+Canonical: https://siberx-t.vercel.app/.wellknown/security.txt
 Policy: https://siberx-t.vercel.app/SECURITY.md
