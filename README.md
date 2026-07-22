@@ -59,7 +59,7 @@ vercel --prod     # promote to production
 or: push to GitHub → Vercel dashboard → **Add New Project** → import the repo.
 
 After your first deploy, update the placeholder domain in
-`.well-known/security.txt` and in `SECURITY.md` to your real
+`.wellknown/security.txt` and in `SECURITY.md` to your real
 `*.vercel.app` URL (or custom domain).
 
 ## Security, for real
