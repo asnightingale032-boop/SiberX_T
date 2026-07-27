@@ -37,12 +37,12 @@ function renderUpdates(){
   const s = getState();
   const mount = document.getElementById('live-updates');
   const items = (s.newsUpdates || []).slice().reverse();
-  mount.innerHTML = items.map(u=>`
-    <div class="feed-row" style="grid-template-columns:70px 1fr;">
-      <span class="ts">${escapeHtml(u.ts)}</span>
-      <span class="msg">${escapeHtml(u.text)}</span>
+  mount.innerHTML = safe(items.map(u=> html`
+    <div class="feed-row grid-cols-news">
+      <span class="ts">${u.ts}</span>
+      <span class="msg">${u.text}</span>
     </div>
-  `).join('');
+  `).join(''));
 }
 
 function pushNewsUpdate(){
@@ -63,20 +63,20 @@ const QUOTES = [
 
 function renderQuotes(){
   const mount = document.getElementById('witness-quotes');
-  mount.innerHTML = QUOTES.map(q=>`
+  mount.innerHTML = safe(QUOTES.map(q=> html`
     <div class="card">
-      <p style="font-style:italic; margin-bottom:8px;">${escapeHtml(q.text)}</p>
-      <span class="text-sm mono text-dim">— ${escapeHtml(q.name)}</span>
+      <p class="italic mb-8">${q.text}</p>
+      <span class="text-sm mono text-dim">— ${q.name}</span>
     </div>
-  `).join('');
+  `).join(''));
 }
 
 function renderSnapshot(){
   const s = getState();
-  document.getElementById('snapshot-body').innerHTML = `
-    <div class="flex between" style="margin-bottom:10px;"><span class="text-sm">Threat level</span><span class="pill pill--${threatPillClass(s.threatLevel)}"><span class="dot"></span>L${s.threatLevel}</span></div>
-    <div class="flex between" style="margin-bottom:10px;"><span class="text-sm">Service availability</span><span class="mono">${s.availability}%</span></div>
-    <div class="flex between" style="margin-bottom:10px;"><span class="text-sm">Public sentiment index</span><span class="mono">${s.sentiment}</span></div>
+  document.getElementById('snapshot-body').innerHTML = html`
+    <div class="flex between mb-10"><span class="text-sm">Threat level</span><span class="pill pill--${threatPillClass(s.threatLevel)}"><span class="dot"></span>L${s.threatLevel}</span></div>
+    <div class="flex between mb-10"><span class="text-sm">Service availability</span><span class="mono">${s.availability}%</span></div>
+    <div class="flex between mb-10"><span class="text-sm">Public sentiment index</span><span class="mono">${s.sentiment}</span></div>
     <div class="flex between"><span class="text-sm">Incident status</span><span class="mono">${s.incidentDeclared ? 'Declared' : 'Monitoring'}</span></div>
   `;
 }
