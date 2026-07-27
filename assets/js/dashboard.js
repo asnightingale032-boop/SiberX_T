@@ -26,7 +26,7 @@ seedChatOnce();
 function renderKpis(){
   const s = getState();
   const mount = document.getElementById('kpi-row');
-  mount.innerHTML = `
+  mount.innerHTML = html`
     <div class="panel ${s.threatLevel>=4?'panel--alert':''}">
       <h3>Threat Level</h3>
       <div class="big-stat">${s.threatLevel} / 5</div>
@@ -44,7 +44,7 @@ function renderKpis(){
     </div>
     <div class="panel ${s.incidentDeclared?'panel--ok':''}">
       <h3>Incident Status</h3>
-      <div class="big-stat" style="font-size:20px;">${s.incidentDeclared ? 'DECLARED' : 'MONITORING'}</div>
+      <div class="big-stat fs-20">${s.incidentDeclared ? 'DECLARED' : 'MONITORING'}</div>
       <span class="text-sm text-dim">${s.decisionsLog.length} actions logged</span>
     </div>
   `;
@@ -53,58 +53,81 @@ function renderKpis(){
 function renderLinesTable(){
   const s = getState();
   const mount = document.getElementById('lines-table');
-  mount.innerHTML = Object.entries(s.lines).map(([code,l])=>`
-    <tr><td>Line ${escapeHtml(code)}</td><td>${escapeHtml(l.name)}</td>
-    <td><span class="pill pill--${statusPillClass(l.status)}"><span class="dot"></span>${escapeHtml(l.status)}</span></td></tr>
-  `).join('');
+  mount.innerHTML = safe(Object.entries(s.lines).map(([code,l])=> html`
+    <tr><td>Line ${code}</td><td>${l.name}</td>
+    <td><span class="pill pill--${statusPillClass(l.status)}"><span class="dot"></span>${l.status}</span></td></tr>
+  `).join(''));
 }
 
 function renderAlertFeed(){
   const s = getState();
   const mount = document.getElementById('alert-feed');
   if(!s.alerts.length){
-    mount.innerHTML = `<p class="text-sm">No alerts yet. Pull the latest SOC feed to begin.</p>`;
+    mount.innerHTML = html`<p class="text-sm">No alerts yet. Pull the latest SOC feed to begin.</p>`;
     return;
   }
-  mount.innerHTML = s.alerts.slice(0,12).map(a=>`
+  mount.innerHTML = safe(s.alerts.slice(0,12).map(a=> html`
     <div class="feed-row">
-      <span class="ts">${escapeHtml(a.ts)}</span>
-      <span class="tag tag--${escapeHtml(a.tag)}">${escapeHtml(a.tag)}</span>
-      <span class="msg">${escapeHtml(a.msg)}</span>
+      <span class="ts">${a.ts}</span>
+      <span class="tag tag--${a.tag}">${a.tag}</span>
+      <span class="msg">${a.msg}</span>
     </div>
-  `).join('');
+  `).join(''));
 }
 
 function renderDecisionLog(){
   const s = getState();
   const mount = document.getElementById('decision-log');
   if(!s.decisionsLog.length){
-    mount.innerHTML = `<p class="text-sm">No executive actions taken yet.</p>`;
+    mount.innerHTML = html`<p class="text-sm">No executive actions taken yet.</p>`;
     return;
   }
-  mount.innerHTML = s.decisionsLog.slice().reverse().map(d=>`
+  mount.innerHTML = safe(s.decisionsLog.slice().reverse().map(d=> html`
     <div class="feed-row">
-      <span class="ts">${escapeHtml(d.ts)}</span>
+      <span class="ts">${d.ts}</span>
       <span class="tag tag--ok">action</span>
-      <span class="msg">${escapeHtml(d.text)}</span>
+      <span class="msg">${d.text}</span>
     </div>
-  `).join('');
+  `).join(''));
 }
 
+/* Chat rendering uses direct DOM element creation + textContent for the
+   two genuinely free-typed fields (message text, and the display name
+   used for avatar initials) rather than a template string — generalizing
+   the pattern already used in security-review.js's submitOption() for
+   quiz option labels. This makes escaping structural rather than a
+   per-call-site habit: textContent cannot be tricked into interpreting
+   its argument as markup, regardless of what the string contains. */
 function renderChat(){
   const s = getState();
   const mount = document.getElementById('chat-log');
   const log = s.chatLog || [];
-  mount.innerHTML = log.map(m=>{
+  mount.innerHTML = '';
+  log.forEach(m=>{
+    const row = document.createElement('div');
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    const metaWrap = document.createElement('div');
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = m.text;
+
     if(m.who==='me'){
-      const initials = escapeHtml((s.user.name||'ME').slice(0,2).toUpperCase());
-      return `<div class="msg-row me"><div class="msg-avatar">${initials}</div>
-        <div><div class="msg-meta">${escapeHtml(m.ts)}</div><div class="msg-bubble">${escapeHtml(m.text)}</div></div></div>`;
+      row.className = 'msg-row me';
+      avatar.textContent = (s.user.name||'ME').slice(0,2).toUpperCase();
+      meta.textContent = m.ts;
+    } else {
+      const person = CHAT_CAST.find(c=>c.key===m.who) || { name:'Unknown', key:'??' };
+      row.className = 'msg-row';
+      avatar.textContent = person.key;
+      meta.textContent = `${person.name} · ${m.ts}`;
     }
-    const person = CHAT_CAST.find(c=>c.key===m.who) || { name:'Unknown', key:'??' };
-    return `<div class="msg-row"><div class="msg-avatar">${escapeHtml(person.key)}</div>
-      <div><div class="msg-meta">${escapeHtml(person.name)} · ${escapeHtml(m.ts)}</div><div class="msg-bubble">${escapeHtml(m.text)}</div></div></div>`;
-  }).join('');
+    metaWrap.append(meta, bubble);
+    row.append(avatar, metaWrap);
+    mount.appendChild(row);
+  });
   mount.scrollTop = mount.scrollHeight;
 }
 
