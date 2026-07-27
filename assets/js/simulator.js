@@ -65,14 +65,14 @@ function renderPaLog(){
   const s = getState();
   const mount = document.getElementById('pa-log');
   const log = s.paLog || [];
-  mount.innerHTML = log.map(m=>{
+  mount.innerHTML = safe(log.map(m=>{
     if(m.who==='RO'){
-      return `<div class="msg-row"><div class="msg-avatar">RO</div>
-        <div><div class="msg-meta">CISO — R. Okafor · ${escapeHtml(m.ts)}</div><div class="msg-bubble">${escapeHtml(m.text)}</div></div></div>`;
+      return html`<div class="msg-row"><div class="msg-avatar">RO</div>
+        <div><div class="msg-meta">CISO — R. Okafor · ${m.ts}</div><div class="msg-bubble">${m.text}</div></div></div>`;
     }
-    return `<div class="msg-row system"><div class="msg-avatar">⚠</div>
-      <div><div class="msg-meta">Hijacked channel · ${escapeHtml(m.ts)}</div><div class="msg-bubble">${escapeHtml(m.text)}</div></div></div>`;
-  }).join('');
+    return html`<div class="msg-row system"><div class="msg-avatar">⚠</div>
+      <div><div class="msg-meta">Hijacked channel · ${m.ts}</div><div class="msg-bubble">${m.text}</div></div></div>`;
+  }).join(''));
   mount.scrollTop = mount.scrollHeight;
 }
 
@@ -112,13 +112,13 @@ function renderSimFeed(){
     mount.innerHTML = `<p class="text-sm">No events logged yet.</p>`;
     return;
   }
-  mount.innerHTML = items.map(d=>`
+  mount.innerHTML = safe(items.map(d=> html`
     <div class="feed-row">
-      <span class="ts">${escapeHtml(d.ts)}</span>
+      <span class="ts">${d.ts}</span>
       <span class="tag tag--info">soc</span>
-      <span class="msg">${escapeHtml(d.text)}</span>
+      <span class="msg">${d.text}</span>
     </div>
-  `).join('');
+  `).join(''));
 }
 
 function applySysAction(spec, btn){
@@ -152,12 +152,18 @@ function renderNotes(){
     mount.innerHTML = `<p class="text-sm">No case notes yet. Add your first forensic observation above.</p>`;
     return;
   }
-  mount.innerHTML = s.notes.slice().reverse().map(n=>`
-    <div class="card mono text-sm" style="margin-bottom:8px; padding:12px;">
-      <div class="text-dim" style="margin-bottom:4px;">${escapeHtml(n.ts)} — ${escapeHtml(n.author)}</div>
-      <div>${escapeHtml(n.text)}</div>
-    </div>
-  `).join('');
+  mount.innerHTML = '';
+  s.notes.slice().reverse().forEach(n=>{
+    const card = document.createElement('div');
+    card.className = 'card mono text-sm note-card';
+    const meta = document.createElement('div');
+    meta.className = 'text-dim mb-4';
+    meta.textContent = `${n.ts} — ${n.author}`;
+    const body = document.createElement('div');
+    body.textContent = n.text;
+    card.append(meta, body);
+    mount.appendChild(card);
+  });
 }
 
 document.getElementById('note-submit').addEventListener('click', ()=>{
@@ -201,14 +207,30 @@ function renderAiLog(){
   const s = getState();
   const mount = document.getElementById('ai-log');
   const log = s.aiLog || [];
-  mount.innerHTML = log.map(m=>{
+  mount.innerHTML = '';
+  log.forEach(m=>{
+    const row = document.createElement('div');
+    const avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    const metaWrap = document.createElement('div');
+    const meta = document.createElement('div');
+    meta.className = 'msg-meta';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.textContent = m.text;
     if(m.who==='me'){
-      return `<div class="msg-row me"><div class="msg-avatar">${escapeHtml((s.user.name||'ME').slice(0,2).toUpperCase())}</div>
-        <div><div class="msg-meta">${escapeHtml(m.ts)}</div><div class="msg-bubble">${escapeHtml(m.text)}</div></div></div>`;
+      row.className = 'msg-row me';
+      avatar.textContent = (s.user.name||'ME').slice(0,2).toUpperCase();
+      meta.textContent = m.ts;
+    } else {
+      row.className = 'msg-row';
+      avatar.textContent = 'AI';
+      meta.textContent = `Triage Assistant \u00b7 ${m.ts}`;
     }
-    return `<div class="msg-row"><div class="msg-avatar">AI</div>
-      <div><div class="msg-meta">Triage Assistant \u00b7 ${escapeHtml(m.ts)}</div><div class="msg-bubble">${escapeHtml(m.text)}</div></div></div>`;
-  }).join('');
+    metaWrap.append(meta, bubble);
+    row.append(avatar, metaWrap);
+    mount.appendChild(row);
+  });
   mount.scrollTop = mount.scrollHeight;
 }
 
