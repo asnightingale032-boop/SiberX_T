@@ -1,0 +1,32 @@
+# Build/publish allowlist (Security Recommendation, Dimension 11: Attack-
+# Surface Simplicity — "Add a build/publish allowlist so only intended
+# assets deploy — no stray .git, source maps, or backups.")
+#
+# Everything below stays in the git repository (still visible on GitHub)
+# but is excluded from the actual Vercel deployment, since none of it is
+# part of the live application. Keeping the deployed surface to exactly
+# the 8 app pages + assets + the one API route + SECURITY.md/security.txt
+# means there's nothing else here for an attacker (or an accidental
+# request) to reach.
+
+# Assessment reports and docx exports — repo documentation, not app pages
+docs/
+
+# CI/repo configuration — not meaningful to serve
+.github/
+.gitleaks.toml
+.env.example
+scripts/
+
+# Generic markdown, EXCEPT the two files the app actually links to
+*.md
+!SECURITY.md
+
+# Defensive: never publish source maps or backup/version-control artifacts,
+# even though none currently exist in this repo (see SURF-01 in the
+# security findings — this is exactly the class of exposure that finding
+# warns against).
+*.map
+*.bak
+*.orig
+.git/
