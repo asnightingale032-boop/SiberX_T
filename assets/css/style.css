@@ -336,3 +336,75 @@ td{ padding:10px; border-bottom:1px solid var(--grid-line); color:var(--text-pri
 .posture-item{ display:flex; align-items:center; gap:10px; padding:10px 12px; background:var(--panel-raised); border:1px solid var(--hairline); border-radius:8px; font-size:12.5px; }
 .posture-item .ico{ font-size:15px; }
 .copy-btn{ font-size:11px; padding:5px 9px; }
+
+/* ==========================================================================
+   Utility classes — added to eliminate every inline style="" attribute in
+   the codebase (Security Recommendation, Dimension 11: Attack-Surface
+   Simplicity) so style-src can drop 'unsafe-inline'. Dynamic values that
+   still need to vary at runtime are set via the CSSOM (element.style.setProperty
+   / element.style.property =), which CSP's style-src does not restrict —
+   only markup-level style="" attributes and <style> blocks are restricted.
+   ========================================================================== */
+.hidden{ display:none; }
+.m-0{ margin:0; }
+.mb-4{ margin-bottom:4px; }
+.mb-6{ margin-bottom:6px; }
+.mb-8{ margin-bottom:8px; }
+.mb-10{ margin-bottom:10px; }
+.mb-14{ margin-bottom:14px; }
+.mb-16{ margin-bottom:16px; }
+.mb-18{ margin-bottom:18px; }
+.mt-10{ margin-top:10px; }
+.ml-6{ margin-left:6px; }
+.pl-18{ padding-left:18px; }
+.fs-13{ font-size:13px; }
+.fs-19{ font-size:19px; }
+.fs-20{ font-size:20px; }
+.fs-21{ font-size:21px; }
+.fw-600{ font-weight:600; }
+.italic{ font-style:italic; }
+.no-transform{ text-transform:none; }
+.float-right{ float:right; }
+.gap-10{ gap:10px; }
+.brand-link{ text-decoration:none; color:inherit; }
+.text-center{ text-align:center; }
+.justify-center{ justify-content:center; }
+.svg-full{ width:100%; height:auto; }
+.max-h-200{ max-height:200px; }
+.max-h-220{ max-height:220px; overflow-y:auto; }
+.max-h-260{ max-height:260px; }
+.max-h-420{ max-height:420px; }
+.h-260{ height:260px; }
+.h-300{ height:300px; }
+.dim-list{ color:var(--text-dim); padding-left:18px; }
+.news-list{ padding-left:18px; color:var(--text-dim); font-size:13px; }
+.grid-cols-report{ grid-template-columns:150px 90px 1fr; }
+.grid-cols-training{ grid-template-columns:70px 170px 1fr; }
+.grid-cols-news{ grid-template-columns:70px 1fr; }
+.header-check-row{ padding:6px 0; border-bottom:1px solid var(--grid-line); }
+.note-card{ margin-bottom:8px; padding:12px; }
+.module-title{ margin:0; text-transform:none; font-family:var(--font-display); font-size:16px; color:var(--text-primary); }
+.lab-card-title{ margin:6px 0 4px; font-size:15px; text-transform:none; }
+.detail-title{ text-transform:none; margin:8px 0 2px; }
+.quiz-q{ font-weight:600; color:var(--text-primary); }
+.banner-warn-border{ border-color:rgba(245,166,35,.4); }
+.text-status-ok{ color:var(--status-ok); }
+.card-input{ max-width:160px; background:var(--panel-raised); border:1px solid var(--hairline); border-radius:8px; padding:11px 12px; color:var(--text-primary); }
+.choices-list{ color:var(--text-dim); font-size:13.5px; padding-left:18px; }
+.stage-title{ font-size:19px; text-transform:none; }
+.choices-heading{ margin-top:16px; text-transform:none; }
+
+/* Verdict / debrief color classes — replace inline color:${verdictColor} */
+.verdict-ok{ color:var(--status-ok); }
+.verdict-warn{ color:var(--status-degraded); }
+.verdict-critical{ color:var(--status-critical); }
+.verdict-heading{ font-family:var(--font-display); font-size:20px; font-weight:700; }
+
+/* Score bars — width/background now set via CSS custom properties through
+   the CSSOM (element.style.setProperty('--w', ...)), not string-built
+   style="" attributes. See assets/js/decisions.js renderScoreBars(). */
+.score-bar-fill{ width:var(--w, 0%); background:var(--bar-color, var(--line-c)); }
+.bar-security{ --bar-color:var(--line-c); }
+.bar-trust{ --bar-color:var(--line-a); }
+.bar-continuity{ --bar-color:var(--line-b); }
+.bar-leadership{ --bar-color:var(--line-e); }
