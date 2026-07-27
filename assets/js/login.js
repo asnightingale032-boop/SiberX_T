@@ -1,8 +1,10 @@
 /* Login flow: two-step credential + MFA simulation.
    No network calls are made anywhere in this file — there is nothing
-   to intercept. Input is constrained (maxlength/pattern in HTML,
-   sanitizeText here) before it ever touches localStorage, and
-   escaped again at render time by app.js's escapeHtml(). */
+   to intercept. The responder name is validated against an allowlist
+   (NAME_ALLOWLIST in app.js) and rejected with visible feedback if it
+   doesn't match, rather than being silently stripped down to something
+   that does. sanitizeText() and escapeHtml() remain the defense-in-depth
+   backstop either way. */
 
 let selectedRole = 'Incident Commander';
 
@@ -32,6 +34,12 @@ document.getElementById('to-mfa-btn').addEventListener('click', ()=>{
     passInput.reportValidity();
     return;
   }
+  if(!NAME_ALLOWLIST.test(nameInput.value.trim())){
+    nameInput.setCustomValidity('Letters, numbers, spaces, hyphens, and apostrophes only (2–40 characters).');
+    nameInput.reportValidity();
+    nameInput.setCustomValidity('');
+    return;
+  }
   document.getElementById('step-credentials').style.display = 'none';
   document.getElementById('step-mfa').style.display = 'block';
   document.getElementById('mfa').focus();
@@ -49,8 +57,8 @@ document.getElementById('login-form').addEventListener('submit', (e)=>{
     mfaInput.reportValidity();
     return;
   }
-  const rawName = document.getElementById('name').value;
-  const name = sanitizeText(rawName, 40) || 'Responder';
+  const rawName = document.getElementById('name').value.trim();
+  const name = NAME_ALLOWLIST.test(rawName) ? sanitizeText(rawName, 40) : 'Responder';
 
   setState({ user: { name, role: selectedRole }, lastActivity: Date.now() });
   if(!getState().alerts.length){
