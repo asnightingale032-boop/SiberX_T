@@ -6,7 +6,7 @@ document.getElementById('card-check-btn').addEventListener('click', ()=>{
   const box = document.getElementById('card-result');
   box.style.display = 'flex';
   if(!isFourDigits(val)){
-    box.innerHTML = `<span>\u26a0\ufe0f</span><span>Enter exactly 4 digits to run the simulated check.</span>`;
+    box.innerHTML = html`<span>\u26a0\ufe0f</span><span>Enter exactly 4 digits to run the simulated check.</span>`;
     return;
   }
   // Deterministic pseudo-result derived from the digits, for demo purposes
@@ -15,10 +15,10 @@ document.getElementById('card-check-btn').addEventListener('click', ()=>{
   const affected = sum % 4 === 0;
   if(affected){
     box.style.borderColor = 'var(--status-degraded)';
-    box.innerHTML = `<span>\u26a0\ufe0f</span><span>Cards ending in <b>${escapeHtml(val)}</b> were used at a station during the affected window. No payment data exposure has been confirmed, but we recommend monitoring your statement.</span>`;
+    box.innerHTML = html`<span>\u26a0\ufe0f</span><span>Cards ending in <b>${val}</b> were used at a station during the affected window. No payment data exposure has been confirmed, but we recommend monitoring your statement.</span>`;
   } else {
     box.style.borderColor = '';
-    box.innerHTML = `<span>\u2705</span><span>Cards ending in <b>${escapeHtml(val)}</b> do not appear in the affected activity window.</span>`;
+    box.innerHTML = html`<span>\u2705</span><span>Cards ending in <b>${val}</b> do not appear in the affected activity window.</span>`;
   }
 });
 
