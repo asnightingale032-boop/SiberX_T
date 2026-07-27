@@ -82,7 +82,7 @@ function renderStage(){
   document.getElementById('stage-progress').textContent = `${Math.min(stageIdx,SCENARIO.length)}/${SCENARIO.length} decisions made`;
 
   if(stageIdx >= SCENARIO.length){
-    document.getElementById('scenario-body').innerHTML = `<p>All decision points complete. See your debrief below.</p>`;
+    document.getElementById('scenario-body').innerHTML = html`<p>All decision points complete. See your debrief below.</p>`;
     document.getElementById('stage-label').textContent = 'Scenario complete';
     renderDebrief();
     document.getElementById('debrief-panel').style.display = 'block';
@@ -95,12 +95,12 @@ function renderStage(){
   document.getElementById('debrief-panel').style.display = 'none';
 
   const body = document.getElementById('scenario-body');
-  body.innerHTML = `
-    <h2 style="font-size:19px; text-transform:none;">${escapeHtml(stage.title)}</h2>
-    <p>${escapeHtml(stage.prompt)}</p>
+  body.innerHTML = html`
+    <h2 class="stage-title">${stage.title}</h2>
+    <p>${stage.prompt}</p>
     <div id="choice-list"></div>
-    <div id="result-box" style="display:none;" class="banner mt-16"></div>
-    <button class="btn btn-primary mt-16" id="next-btn" type="button" style="display:none;">Continue →</button>
+    <div id="result-box" class="banner mt-16 hidden"></div>
+    <button class="btn btn-primary mt-16 hidden" id="next-btn" type="button">Continue →</button>
   `;
   const list = document.getElementById('choice-list');
   stage.choices.forEach((c, i)=>{
@@ -129,7 +129,7 @@ function chooseOption(stageIdx, choiceIdx){
   document.querySelectorAll('#choice-list .btn').forEach(b=> b.disabled = true);
   const box = document.getElementById('result-box');
   box.style.display = 'flex';
-  box.innerHTML = `<span>✓</span><span>${escapeHtml(choice.result)}</span>`;
+  box.innerHTML = html`<span>✓</span><span>${choice.result}</span>`;
   document.getElementById('next-btn').style.display = 'inline-flex';
   document.getElementById('next-btn').onclick = null;
   document.getElementById('next-btn').addEventListener('click', ()=>{
@@ -145,31 +145,47 @@ function chooseOption(stageIdx, choiceIdx){
 function renderScoreBars(){
   const s = getState();
   const labels = { security:'Security Architecture', trust:'Public Trust', continuity:'Operational Continuity', leadership:'Leadership & Governance' };
-  const colors = { security:'var(--line-c)', trust:'var(--line-a)', continuity:'var(--line-b)', leadership:'var(--line-e)' };
+  const barClass = { security:'bar-security', trust:'bar-trust', continuity:'bar-continuity', leadership:'bar-leadership' };
   const mount = document.getElementById('score-bars');
-  mount.innerHTML = Object.keys(labels).map(k=>`
-    <div class="score-bar-row">
-      <div class="lbl"><span>${labels[k]}</span><span>${s.score[k]}</span></div>
-      <div class="score-bar-track"><div class="score-bar-fill" style="width:${s.score[k]}%; background:${colors[k]};"></div></div>
-    </div>
-  `).join('');
+  mount.innerHTML = '';
+  Object.keys(labels).forEach(k=>{
+    const row = document.createElement('div');
+    row.className = 'score-bar-row';
+    const lbl = document.createElement('div');
+    lbl.className = 'lbl';
+    const nameSpan = document.createElement('span');
+    nameSpan.textContent = labels[k];
+    const valSpan = document.createElement('span');
+    valSpan.textContent = String(s.score[k]);
+    lbl.append(nameSpan, valSpan);
+    const track = document.createElement('div');
+    track.className = 'score-bar-track';
+    const fill = document.createElement('div');
+    fill.className = `score-bar-fill ${barClass[k]}`;
+    // Width is set via the CSSOM custom property, not a string-built
+    // style="" attribute — this keeps style-src free of 'unsafe-inline'.
+    fill.style.setProperty('--w', `${clamp(s.score[k],0,100)}%`);
+    track.appendChild(fill);
+    row.append(lbl, track);
+    mount.appendChild(row);
+  });
 }
 
 function renderDebrief(){
   const s = getState();
   const avg = Math.round((s.score.security + s.score.trust + s.score.continuity + s.score.leadership) / 4);
-  let verdict, verdictColor;
-  if(avg >= 75){ verdict = 'Resilient Response'; verdictColor='var(--status-ok)'; }
-  else if(avg >= 50){ verdict = 'Adequate, With Gaps'; verdictColor='var(--status-degraded)'; }
-  else { verdict = 'Response Needs Rework'; verdictColor='var(--status-critical)'; }
+  let verdict, verdictClass;
+  if(avg >= 75){ verdict = 'Resilient Response'; verdictClass='verdict-ok'; }
+  else if(avg >= 50){ verdict = 'Adequate, With Gaps'; verdictClass='verdict-warn'; }
+  else { verdict = 'Response Needs Rework'; verdictClass='verdict-critical'; }
 
-  const choiceList = s.decisionsLog.filter(d=>d.text.startsWith('[')).map(d=>`<li>${escapeHtml(d.text.replace(/^\[[^\]]+\]\s*/,''))}</li>`).join('');
+  const choiceList = safe(s.decisionsLog.filter(d=>d.text.startsWith('[')).map(d=> html`<li>${d.text.replace(/^\[[^\]]+\]\s*/,'')}</li>`).join(''));
 
-  document.getElementById('debrief-body').innerHTML = `
-    <p style="color:${verdictColor}; font-family:var(--font-display); font-size:20px; font-weight:700;">${escapeHtml(verdict)} — average score ${avg}/100</p>
+  document.getElementById('debrief-body').innerHTML = html`
+    <p class="verdict-heading ${verdictClass}">${verdict} — average score ${avg}/100</p>
     <p>Your choices across detection, containment, insider-threat handling, communications, restoration, and governance shaped how SiberX came through this incident.</p>
-    <h4 style="margin-top:16px; text-transform:none;">Choices made</h4>
-    <ol style="color:var(--text-dim); font-size:13.5px; padding-left:18px;">${choiceList}</ol>
+    <h4 class="choices-heading">Choices made</h4>
+    <ol class="choices-list">${choiceList}</ol>
     <div class="banner mt-16">
       <span>📋</span>
       <span><b>Lessons emphasized in this exercise:</b> layered security architecture, integrated public communications, business continuity planning, decisive leadership, cyber resilience, and coordinated governance — all essential to defending interconnected critical infrastructure.</span>
