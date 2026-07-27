@@ -12,11 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        # Pinned to a commit SHA, not a mutable tag. Verified against
+        # https://github.com/actions/checkout/releases — tag v6.0.3.
+        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
 
       - name: Verify Node.js JS syntax
         run: |
-          for f in $(find assets/js -name "*.js"); do
+          for f in $(find assets/js api -name "*.js"); do
             echo "Checking $f"
             node --check "$f"
           done
@@ -35,6 +37,34 @@ jobs:
             exit 1
           fi
           echo "No dangerous patterns found."
+
+      - name: Block inline style="" attributes (Dimension 11 — keeps style-src free of 'unsafe-inline')
+        run: |
+          set -e
+          if grep -RInE 'style="' --include="*.html" .; then
+            echo "::error::Found an inline style=\"\" attribute. vercel.json's CSP no longer allows 'unsafe-inline' for style-src — use a CSS class in assets/css/style.css instead, or element.style.setProperty()/element.style.<prop>= from JS (CSSOM assignment, not a markup attribute, is not restricted by style-src)."
+            exit 1
+          fi
+          if grep -RPn '\.innerHTML\s*=\s*`[^`]*style="' --include="*.js" assets/js/ 2>/dev/null; then
+            echo "::error::Found a JS-built style=\"\" attribute inside an innerHTML template. Same rule as above applies to generated markup."
+            exit 1
+          fi
+          echo "No inline style attributes found."
+
+      - name: Block un-escaped interpolation into innerHTML (Dimension 1 — structural escaping)
+        run: |
+          set -e
+          # Every .innerHTML assignment in this codebase must go through
+          # the html`` auto-escaping tagged template (or be a fully
+          # static string with no ${...} interpolation at all) — see
+          # assets/js/app.js. A bare template literal assigned directly
+          # to .innerHTML that still contains an interpolation is exactly
+          # the pattern that lets a call site forget to escape.
+          if grep -RPn '\.innerHTML\s*=\s*`[^`]*\$\{' --include="*.js" assets/js/ 2>/dev/null; then
+            echo "::error::Found .innerHTML = \`...\${...}\` — an un-tagged template literal with an interpolation assigned directly to innerHTML. Wrap it with the html\`\` helper from assets/js/app.js (or build the fragment with safe() if it's pre-escaped) instead of assigning a bare template string."
+            exit 1
+          fi
+          echo "No un-escaped innerHTML interpolations found."
 
       - name: Block obvious hardcoded secrets (belt-and-suspenders alongside gitleaks)
         run: |
