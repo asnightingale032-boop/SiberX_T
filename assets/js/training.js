@@ -10,13 +10,13 @@ const MODULES = [
 
 function renderModules(){
   const mount = document.getElementById('module-grid');
-  mount.innerHTML = MODULES.map((m,i)=>`
+  mount.innerHTML = safe(MODULES.map((m,i)=> html`
     <div class="card">
-      <div class="flex between center"><h3 style="margin:0; text-transform:none; font-family:var(--font-display); font-size:16px; color:var(--text-primary);">${escapeHtml(m.title)}</h3><span class="pill pill--ok"><span class="dot"></span>${escapeHtml(m.tag)}</span></div>
-      <p class="mt-8">${escapeHtml(m.desc)}</p>
+      <div class="flex between center"><h3 class="module-title">${m.title}</h3><span class="pill pill--ok"><span class="dot"></span>${m.tag}</span></div>
+      <p class="mt-8">${m.desc}</p>
       <button class="btn btn-sm" data-mark="${i}" type="button">Mark module complete</button>
     </div>
-  `).join('');
+  `).join(''));
   document.querySelectorAll('[data-mark]').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       const s = getState();
@@ -43,16 +43,16 @@ const QUIZ = [
 
 function renderQuiz(){
   const mount = document.getElementById('quiz-body');
-  mount.innerHTML = QUIZ.map((item,qi)=>`
+  mount.innerHTML = safe(QUIZ.map((item,qi)=> html`
     <div class="mt-16">
-      <p style="font-weight:600; color:var(--text-primary);">${qi+1}. ${escapeHtml(item.q)}</p>
-      ${item.options.map((opt,oi)=>`
+      <p class="quiz-q">${qi+1}. ${item.q}</p>
+      ${safe(item.options.map((opt,oi)=> html`
         <label class="quiz-opt" data-q="${qi}" data-o="${oi}">
-          <input type="radio" name="q${qi}" value="${oi}"> ${escapeHtml(opt)}
+          <input type="radio" name="q${qi}" value="${oi}"> ${opt}
         </label>
-      `).join('')}
+      `).join(''))}
     </div>
-  `).join('');
+  `).join(''));
 }
 
 document.getElementById('quiz-check').addEventListener('click', ()=>{
@@ -69,7 +69,7 @@ document.getElementById('quiz-check').addEventListener('click', ()=>{
   });
   const result = document.getElementById('quiz-result');
   result.style.display = 'flex';
-  result.innerHTML = `<span>📊</span><span>You scored <b>${correctCount} / ${QUIZ.length}</b>. ${correctCount===QUIZ.length ? 'Perfect score \u2014 nice work.' : 'Review the highlighted answers above.'}</span>`;
+  result.innerHTML = html`<span>📊</span><span>You scored <b>${correctCount} / ${QUIZ.length}</b>. ${safe(correctCount===QUIZ.length ? 'Perfect score \u2014 nice work.' : 'Review the highlighted answers above.')}</span>`;
   const s = getState();
   s.submissions.push({ ts: nowTs(), kind:'Quiz completed', text: `Incident Response Fundamentals — ${correctCount}/${QUIZ.length}`, author: s.user.name });
   setState(s);
@@ -81,15 +81,16 @@ function renderRecord(){
   const mount = document.getElementById('training-record');
   const items = s.submissions.filter(x => x.kind==='Training module completed' || x.kind==='Quiz completed');
   if(!items.length){
-    mount.innerHTML = `<p class="text-sm">No training activity logged yet — complete a module or the quiz above.</p>`;
+    mount.innerHTML = html`<p class="text-sm">No training activity logged yet — complete a module or the quiz above.</p>`;
     return;
   }
-  mount.innerHTML = `<div class="feed">${items.slice().reverse().map(i=>`
-    <div class="feed-row" style="grid-template-columns:70px 170px 1fr;">
-      <span class="ts">${escapeHtml(i.ts)}</span>
-      <span class="tag tag--ok">${escapeHtml(i.kind)}</span>
-      <span class="msg">${escapeHtml(i.text)}</span>
-    </div>`).join('')}</div>`;
+  const rows = safe(items.slice().reverse().map(i=> html`
+    <div class="feed-row grid-cols-training">
+      <span class="ts">${i.ts}</span>
+      <span class="tag tag--ok">${i.kind}</span>
+      <span class="msg">${i.text}</span>
+    </div>`).join(''));
+  mount.innerHTML = html`<div class="feed">${rows}</div>`;
 }
 
 renderModules();
