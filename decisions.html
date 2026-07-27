@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Decision Simulator — SiberX Crisis Command</title>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css" integrity="sha384-SLotmUNTGtUPJE5Uw2kskSNKCZUJJYkz+BuWwSSi0XH0KB0iGArU1d1NImCurnCA" crossorigin="anonymous">
 </head>
 <body>
 <header class="control-bar" id="control-bar"></header>
@@ -17,8 +17,8 @@
   </div>
 
   <div class="panel mt-16">
-    <div class="flex between center" style="margin-bottom:6px;">
-      <span class="eyebrow" id="stage-label" style="margin:0;">Stage 1 of 6</span>
+    <div class="flex between center mb-6">
+      <span class="eyebrow m-0" id="stage-label">Stage 1 of 6</span>
       <span class="text-sm text-dim mono" id="stage-progress"></span>
     </div>
     <div id="scenario-body"></div>
@@ -29,7 +29,7 @@
     <div id="score-bars"></div>
   </section>
 
-  <section class="panel mt-24" id="debrief-panel" style="display:none;">
+  <section class="panel mt-24 hidden" id="debrief-panel">
     <h3>Post-Incident Debrief</h3>
     <div id="debrief-body"></div>
     <button class="btn btn-primary mt-16" id="restart-btn" type="button">Restart scenario</button>
@@ -37,7 +37,7 @@
 </main>
 
 <footer class="ticker" id="ticker"></footer>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/decisions.js"></script>
+<script src="assets/js/app.js" integrity="sha384-zZ+pA3l+tb4/9OQxHD9V9VT05pzqPvmhKQhelZuXTugsmtkp6ESURY6e9oishTrf" crossorigin="anonymous" defer></script>
+<script src="assets/js/decisions.js" integrity="sha384-gFMHrwgy7l68ObKMZW+/RaH6L1GUfOzbyqj2W+7O6cw8+E154EfNLQcrd3C4dMKN" crossorigin="anonymous" defer></script>
 </body>
 </html>

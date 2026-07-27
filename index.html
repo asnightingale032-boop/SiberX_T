@@ -6,12 +6,12 @@
 <title>SiberX Crisis Command — Sign In</title>
 <meta name="description" content="Training simulation only. A fictional cyberattack exercise for SiberX Transit Systems.">
 <meta name="robots" content="noindex, nofollow">
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css" integrity="sha384-SLotmUNTGtUPJE5Uw2kskSNKCZUJJYkz+BuWwSSi0XH0KB0iGArU1d1NImCurnCA" crossorigin="anonymous">
 </head>
 <body>
 
 <header class="control-bar">
-  <a href="index.html" class="control-bar__brand" style="text-decoration:none;color:inherit;">
+  <a href="index.html" class="control-bar__brand brand-link">
     <span class="dot"></span> SIBERX // CRISIS COMMAND
   </a>
   <div class="control-bar__nav"></div>
@@ -20,16 +20,16 @@
 
 <div class="auth-shell">
   <div class="auth-card">
-    <div class="brand-row"><span class="dot"></span><span class="eyebrow" style="margin:0;">Training Exercise · Not a real system</span></div>
-    <h1 style="font-size:21px; text-transform:none;">Crisis Command Access</h1>
-    <p style="font-size:13px;">Sign in to join the SiberX Transit Systems incident response exercise. Any name, code, and 6-digit verification work — this is a self-contained simulation with no backend and no real accounts.</p>
+    <div class="brand-row"><span class="dot"></span><span class="eyebrow m-0">Training Exercise · Not a real system</span></div>
+    <h1 class="fs-21 no-transform">Crisis Command Access</h1>
+    <p class="fs-13">Sign in to join the SiberX Transit Systems incident response exercise. Any name, code, and 6-digit verification work — this is a self-contained simulation with no backend and no real accounts.</p>
 
-    <div id="expired-banner" class="banner" style="display:none; margin-bottom:16px; border-color:rgba(245,166,35,.4);">
+    <div id="expired-banner" class="banner hidden mb-16 banner-warn-border">
       <span>⏱</span>
       <span>Your session expired after 30 minutes of inactivity, consistent with SiberX's access policy. Please sign in again.</span>
     </div>
 
-    <div class="banner" style="margin-bottom:18px;">
+    <div class="banner mb-18">
       <span>⚠️</span>
       <span><b>Pre-incident notice:</b> SOC has logged 3 minor anomalies across signage and gateway services in the last 24 hours. No action required yet — monitoring continues.</span>
     </div>
@@ -38,8 +38,8 @@
       <div id="step-credentials">
         <div class="field">
           <label for="name">Responder name</label>
-          <input id="name" name="name" type="text" placeholder="e.g. J. Alvarez" required autocomplete="off" maxlength="40" pattern="[^&lt;&gt;]{2,40}">
-          <div class="hint">2–40 characters. No HTML/script content — this field is sanitized and escaped either way.</div>
+          <input id="name" name="name" type="text" placeholder="e.g. J Alvarez" required autocomplete="off" maxlength="40" pattern="[A-Za-z0-9 &#39;\-]{2,40}">
+          <div class="hint">Letters, numbers, spaces, hyphens, and apostrophes only — 2–40 characters.</div>
         </div>
         <div class="field">
           <label for="pass">Access code</label>
@@ -56,8 +56,8 @@
         <button type="button" class="btn btn-primary btn-block" id="to-mfa-btn">Continue →</button>
       </div>
 
-      <div id="step-mfa" style="display:none;">
-        <div class="banner banner--ok" style="margin-bottom:16px;">
+      <div id="step-mfa" class="hidden">
+        <div class="banner banner--ok mb-16">
           <span>🔐</span>
           <span><b>Second factor required.</b> This simulates SiberX's real MFA step — a second, independent factor is required before any responder gets access to crisis command tooling.</span>
         </div>
@@ -78,7 +78,7 @@
 
 <footer class="site-footer">SiberX Transit Systems Crisis Command Platform — fictional training environment · <a href="SECURITY.md">Security policy</a></footer>
 
-<script src="assets/js/app.js"></script>
-<script src="assets/js/login.js"></script>
+<script src="assets/js/app.js" integrity="sha384-zZ+pA3l+tb4/9OQxHD9V9VT05pzqPvmhKQhelZuXTugsmtkp6ESURY6e9oishTrf" crossorigin="anonymous" defer></script>
+<script src="assets/js/login.js" integrity="sha384-diwpJ8Pv2VcsIe5qM9T5AXKZfqbhE8weUAKGXl37khGK8D3BlK2G0175B9o2H5wW" crossorigin="anonymous" defer></script>
 </body>
 </html>

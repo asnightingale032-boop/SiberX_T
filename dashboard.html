@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Executive Dashboard — SiberX Crisis Command</title>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css" integrity="sha384-SLotmUNTGtUPJE5Uw2kskSNKCZUJJYkz+BuWwSSi0XH0KB0iGArU1d1NImCurnCA" crossorigin="anonymous">
 </head>
 <body>
 <header class="control-bar" id="control-bar"></header>
@@ -38,7 +38,7 @@
     <section class="panel">
       <h3>Executive Actions</h3>
       <p class="text-sm">Each action moves the incident forward and is timestamped into the official record.</p>
-      <div class="flex wrap" style="gap:10px;">
+      <div class="flex wrap gap-10">
         <button class="btn btn-danger" data-action="declare" type="button">Declare Level 3 Incident</button>
         <button class="btn" data-action="statement" type="button">Authorize Public Statement</button>
         <button class="btn" data-action="bcp" type="button">Activate Business Continuity Plan</button>
@@ -48,7 +48,7 @@
       </div>
       <hr class="divider">
       <h3>Incident Record</h3>
-      <div class="feed" id="decision-log" style="max-height:200px;"></div>
+      <div class="feed max-h-200" id="decision-log"></div>
     </section>
 
     <section class="panel">
@@ -78,7 +78,7 @@
 </main>
 
 <footer class="ticker" id="ticker"></footer>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/dashboard.js"></script>
+<script src="assets/js/app.js" integrity="sha384-zZ+pA3l+tb4/9OQxHD9V9VT05pzqPvmhKQhelZuXTugsmtkp6ESURY6e9oishTrf" crossorigin="anonymous" defer></script>
+<script src="assets/js/dashboard.js" integrity="sha384-nczUAqu2E+dWKjJXpdFqLBA8/tLFq+d0+Q3SDpj+4Vlkz5RiaZJvqbSM33ZH7nsV" crossorigin="anonymous" defer></script>
 </body>
 </html>

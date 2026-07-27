@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Public Breach Response — SiberX Transit Systems</title>
-<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/style.css" integrity="sha384-SLotmUNTGtUPJE5Uw2kskSNKCZUJJYkz+BuWwSSi0XH0KB0iGArU1d1NImCurnCA" crossorigin="anonymous">
 </head>
 <body>
 <header class="control-bar" id="control-bar"></header>
@@ -20,7 +20,7 @@
     <h3>What happened</h3>
     <p>Earlier today, attackers gained access to a shared service account used by our digital signage, PA, and mobile app systems. This allowed false messages to appear on some station screens, PA systems, and in the app. Our security team detected the activity, isolated the affected systems, and began restoring service from verified, trusted infrastructure.</p>
     <h3>What we're doing</h3>
-    <ul style="color:var(--text-dim); padding-left:18px;">
+    <ul class="dim-list">
       <li>Revoked and rotated all exposed credentials</li>
       <li>Rebuilt affected systems from a trusted, verified environment</li>
       <li>Engaged an independent forensic review, including national cybersecurity authorities</li>
@@ -32,10 +32,10 @@
     <h3>Check if you may have been affected</h3>
     <p class="text-sm">Enter your fare card's last 4 digits. This is a simulated lookup for this training exercise — no real account data is used or transmitted anywhere.</p>
     <div class="flex gap-8">
-      <input id="card-check" type="text" inputmode="numeric" pattern="\d{4}" maxlength="4" placeholder="Last 4 digits" style="max-width:160px; background:var(--panel-raised); border:1px solid var(--hairline); border-radius:8px; padding:11px 12px; color:var(--text-primary);">
+      <input id="card-check" class="card-input" type="text" inputmode="numeric" pattern="\d{4}" maxlength="4" placeholder="Last 4 digits">
       <button class="btn btn-primary" id="card-check-btn" type="button">Check status</button>
     </div>
-    <div id="card-result" class="banner mt-16" style="display:none;"></div>
+    <div id="card-result" class="banner mt-16 hidden"></div>
   </section>
 
   <section class="panel mt-24">
@@ -52,12 +52,12 @@
     <div class="field"><label for="r-station">Station or line</label><input id="r-station" type="text" maxlength="80" placeholder="e.g. Union interchange, Crosstown Line"></div>
     <div class="field"><label for="r-detail">What did you see?</label><textarea id="r-detail" maxlength="500" placeholder="Describe what you saw or experienced"></textarea></div>
     <button class="btn btn-primary" id="r-submit" type="button">Submit report</button>
-    <div id="r-confirm" class="banner mt-16" style="display:none;"><span>✓</span><span>Thank you — your report has been added to the incident record for review.</span></div>
+    <div id="r-confirm" class="banner mt-16 hidden"><span>✓</span><span>Thank you — your report has been added to the incident record for review.</span></div>
   </section>
 </main>
 
 <footer class="ticker" id="ticker"></footer>
-<script src="assets/js/app.js"></script>
-<script src="assets/js/response.js"></script>
+<script src="assets/js/app.js" integrity="sha384-zZ+pA3l+tb4/9OQxHD9V9VT05pzqPvmhKQhelZuXTugsmtkp6ESURY6e9oishTrf" crossorigin="anonymous" defer></script>
+<script src="assets/js/response.js" integrity="sha384-kKqCrFkT0ltbejMyyTgM6v2dlhVtDRlLQzbMp4xCDFg9g1Q1p7D0dB10/Muo/My9" crossorigin="anonymous" defer></script>
 </body>
 </html>
