@@ -64,7 +64,7 @@ vercel --prod     # promote to production
 or: push to GitHub → Vercel dashboard → **Add New Project** → import the repo.
 
 After your first deploy, update the placeholder domain in
-`.well-known/security.txt` and in `SECURITY.md` to your real
+`.wellknown/security.txt` and in `SECURITY.md` to your real
 `*.vercel.app` URL (or custom domain). See `RELEASE_CHECKLIST.md` for the
 full pre-launch checklist.
 
@@ -122,7 +122,7 @@ Summary of what's in place today:
     handlers, inline styles, un-escaped `innerHTML` interpolation, and
     obvious hardcoded secrets before merge.
   - Both workflows pin GitHub Actions to commit SHAs, not mutable tags.
-- **[`SECURITY.md`](./SECURITY.md)** and **[`/.well-known/security.txt`](./.well-known/security.txt)**
+- **[`SECURITY.md`](./SECURITY.md)** and **[`/.wellknown/security.txt`](./.wellknown/security.txt)**
   publish a real, RFC 9116–compliant vulnerability-disclosure path, with
   forward guidance for secrets/cookies/AI integrations if this project
   ever grows a real backend.
@@ -152,7 +152,7 @@ siberx/
 │   └── js/                         one file per page + shared app.js
 ├── scripts/generate-sri.sh         regenerates SRI hashes after asset changes
 ├── docs/                           full security assessment (not deployed — see .vercelignore)
-├── .well-known/security.txt        RFC 9116 disclosure contact
+├── .wellknown/security.txt        RFC 9116 disclosure contact
 ├── .github/workflows/              secret-scan.yml, static-checks.yml
 ├── .gitleaks.toml                  allowlist for intentional training content
 ├── .gitignore / .env.example / .vercelignore
