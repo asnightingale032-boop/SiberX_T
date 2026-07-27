@@ -174,19 +174,19 @@ function labScore(){
 function renderGrid(){
   const s = getState();
   const mount = document.getElementById('lab-grid');
-  mount.innerHTML = FINDINGS.map(f=>{
+  mount.innerHTML = safe(FINDINGS.map(f=>{
     const progress = (s.labProgress || {})[f.id];
     const doneClass = progress ? 'done' : '';
-    const doneBadge = progress ? `<span class="pill pill--${progress.correct?'ok':'critical'}" style="float:right;"><span class="dot"></span>${progress.correct?'Correct':'Missed'}</span>` : '';
-    return `
+    const doneBadge = progress ? html`<span class="pill pill--${progress.correct?'ok':'critical'} float-right"><span class="dot"></span>${progress.correct?'Correct':'Missed'}</span>` : '';
+    return html`
       <div class="lab-card ${doneClass}" data-finding="${f.id}" tabindex="0" role="button">
         <span class="sev sev-${f.severity}">${f.severity}</span>
-        ${doneBadge}
-        <h4 style="margin:6px 0 4px; font-size:15px; text-transform:none;">${escapeHtml(f.title)}</h4>
-        <p class="text-sm mono" style="margin:0;">${escapeHtml(f.system)}</p>
+        ${safe(doneBadge)}
+        <h4 class="lab-card-title">${f.title}</h4>
+        <p class="text-sm mono m-0">${f.system}</p>
       </div>
     `;
-  }).join('');
+  }).join(''));
   document.querySelectorAll('[data-finding]').forEach(card=>{
     card.addEventListener('click', ()=> openFinding(card.dataset.finding));
     card.addEventListener('keydown', (e)=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openFinding(card.dataset.finding); } });
@@ -201,15 +201,15 @@ function openFinding(id){
 
   const detail = document.getElementById('finding-detail');
   detail.style.display = 'block';
-  detail.innerHTML = `
+  detail.innerHTML = html`
     <div class="flex between center wrap gap-8">
       <div>
         <span class="sev sev-${f.severity}">${f.severity}</span>
-        <h3 style="text-transform:none; margin:8px 0 2px;">${escapeHtml(f.title)}</h3>
-        <p class="text-sm mono" style="margin:0;">${escapeHtml(f.system)}</p>
+        <h3 class="detail-title">${f.title}</h3>
+        <p class="text-sm mono m-0">${f.system}</p>
       </div>
     </div>
-    <div class="code-block mt-16">${escapeHtml(f.code)}</div>
+    <div class="code-block mt-16">${f.code}</div>
     <div class="verdict-row">
       <button class="btn" data-verdict="secure" type="button">Mark as Secure</button>
       <button class="btn btn-danger" data-verdict="vulnerable" type="button">Mark as Vulnerable</button>
@@ -229,15 +229,15 @@ function openFinding(id){
 function handleVerdict(f, verdict){
   const follow = document.getElementById('verdict-followup');
   if(verdict !== f.verdict){
-    follow.innerHTML = `
-      <div class="banner" style="border-color:rgba(245,166,35,.4);">
+    follow.innerHTML = html`
+      <div class="banner banner-warn-border">
         <span>\u26a0\ufe0f</span>
         <span>Not quite — this snippet is <b>${f.verdict}</b>. Take another look, then try again.</span>
       </div>
     `;
     return;
   }
-  follow.innerHTML = `
+  follow.innerHTML = html`
     <p class="text-sm">Correct call \u2014 this is <b>${f.verdict}</b>. Now pinpoint exactly what's wrong:</p>
     <div id="option-list"></div>
   `;
@@ -246,7 +246,16 @@ function handleVerdict(f, verdict){
     const label = document.createElement('label');
     label.className = 'quiz-opt';
     label.dataset.o = i;
-    label.innerHTML = `<input type="radio" name="opt-${f.id}" value="${i}"> `;
+    // Structural escaping via element creation: the radio input is
+    // fixed markup (index i is a loop counter, never user input), and
+    // the option text is appended as a text node, never interpreted
+    // as markup regardless of its content.
+    const radio = document.createElement('input');
+    radio.type = 'radio';
+    radio.name = `opt-${f.id}`;
+    radio.value = String(i);
+    label.appendChild(radio);
+    label.appendChild(document.createTextNode(' '));
     label.appendChild(document.createTextNode(opt));
     list.appendChild(label);
   });
@@ -286,7 +295,7 @@ function submitOption(f, isReplay){
   const explain = document.createElement('div');
   explain.className = 'banner mt-16';
   explain.style.borderColor = correct ? 'rgba(45,212,191,.4)' : 'rgba(229,57,80,.4)';
-  explain.innerHTML = `<span>${correct?'\u2705':'\ud83d\udcdd'}</span><span>${escapeHtml(f.explanation)}</span>`;
+  explain.innerHTML = html`<span>${safe(correct?'\u2705':'\ud83d\udcdd')}</span><span>${f.explanation}</span>`;
   follow.appendChild(explain);
 
   renderGrid();
@@ -310,13 +319,13 @@ function renderScorecard(){
     const p = (s.labProgress||{})[f.id];
     const status = !p ? 'Not reviewed' : (p.correct ? 'Correctly identified' : 'Needs re-review');
     const tagClass = !p ? 'warn' : (p.correct ? 'ok' : 'critical');
-    return `<div class="feed-row" style="grid-template-columns:150px 90px 1fr;">
-      <span class="msg">${escapeHtml(f.title)}</span>
-      <span class="tag tag--${tagClass}">${escapeHtml(f.severity)}</span>
-      <span class="msg text-dim">${escapeHtml(status)}</span>
+    return html`<div class="feed-row grid-cols-report">
+      <span class="msg">${f.title}</span>
+      <span class="tag tag--${tagClass}">${f.severity}</span>
+      <span class="msg text-dim">${status}</span>
     </div>`;
   }).join('');
-  document.getElementById('lab-report').innerHTML = `<div class="feed" style="max-height:260px;">${rows}</div>`;
+  document.getElementById('lab-report').innerHTML = html`<div class="feed max-h-260">${safe(rows)}</div>`;
 }
 
 document.getElementById('copy-report-btn').addEventListener('click', async ()=>{
@@ -355,23 +364,23 @@ const EXPECTED_HEADERS = [
 async function runHeaderCheck(){
   const list = document.getElementById('header-check-list');
   const note = document.getElementById('header-check-note');
-  list.innerHTML = `<p class="text-sm">Checking...</p>`;
+  list.innerHTML = html`<p class="text-sm">Checking...</p>`;
   try{
     const res = await fetch(window.location.href, { method:'GET', cache:'no-store' });
     let anyPresent = false;
-    list.innerHTML = EXPECTED_HEADERS.map(c=>{
+    list.innerHTML = safe(EXPECTED_HEADERS.map(c=>{
       const present = res.headers.has(c.key);
       if(present) anyPresent = true;
-      return `<div class="flex between center" style="padding:6px 0; border-bottom:1px solid var(--grid-line);">
-        <span class="text-sm">${escapeHtml(c.label)}</span>
+      return html`<div class="flex between center header-check-row">
+        <span class="text-sm">${c.label}</span>
         <span class="pill pill--${present?'ok':'degraded'}"><span class="dot"></span>${present?'Present':'Not detected'}</span>
       </div>`;
-    }).join('');
+    }).join(''));
     note.textContent = anyPresent
       ? 'Headers detected — this deployment is serving the hardened configuration from vercel.json.'
       : 'No security headers detected in this environment. That\u2019s expected when previewing locally (e.g. python3 -m http.server): those headers are applied by Vercel\u2019s edge network per vercel.json, and will appear once deployed.';
   }catch(e){
-    list.innerHTML = `<p class="text-sm">Could not run the live check in this environment.</p>`;
+    list.innerHTML = html`<p class="text-sm">Could not run the live check in this environment.</p>`;
     note.textContent = '';
   }
 }
