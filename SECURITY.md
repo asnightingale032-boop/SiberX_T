@@ -22,7 +22,7 @@ machine or accounts.
 Reporting a Vulnerability
 Please report findings privately rather than opening a public issue:
 Email: security@siberx-transit.com
-Or see `/.wellknown/security.txt`, published per RFC 9116
+Or see `/.well-known/security.txt`, published per RFC 9116
 Please include:
 A clear description of the issue and its impact
 Steps to reproduce (a minimal example is ideal)
